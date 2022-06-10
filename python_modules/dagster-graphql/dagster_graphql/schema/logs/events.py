@@ -39,6 +39,14 @@ class GrapheneDisplayableEvent(graphene.Interface):
         name = "DisplayableEvent"
 
 
+class GrapheneMarkerEvent(graphene.Interface):
+    markerStart = graphene.String()
+    markerEnd = graphene.String()
+
+    class Meta:
+        name = "MarkerEvent"
+
+
 class GrapheneMissingRunIdErrorEvent(graphene.ObjectType):
     invalidRunId = graphene.NonNull(graphene.String)
 
@@ -433,12 +441,85 @@ class GrapheneObjectStoreOperationEvent(graphene.ObjectType):
 
 class GrapheneEngineEvent(graphene.ObjectType):
     class Meta:
-        interfaces = (GrapheneMessageEvent, GrapheneDisplayableEvent, GrapheneStepEvent)
+        interfaces = (
+            GrapheneMessageEvent,
+            GrapheneDisplayableEvent,
+            GrapheneStepEvent,
+            GrapheneMarkerEvent,
+        )
         name = "EngineEvent"
 
     error = graphene.Field(GraphenePythonError)
-    marker_start = graphene.Field(graphene.String)
-    marker_end = graphene.Field(graphene.String)
+
+
+class GrapheneResourceInitFailureEvent(graphene.ObjectType):
+    class Meta:
+        interfaces = (
+            GrapheneMessageEvent,
+            GrapheneDisplayableEvent,
+            GrapheneStepEvent,
+            GrapheneMarkerEvent,
+        )
+        name = "ResourceInitFailureEvent"
+
+    error = graphene.Field(GraphenePythonError)
+
+
+class GrapheneResourceInitStartedEvent(graphene.ObjectType):
+    class Meta:
+        interfaces = (
+            GrapheneMessageEvent,
+            GrapheneDisplayableEvent,
+            GrapheneStepEvent,
+            GrapheneMarkerEvent,
+        )
+        name = "ResourceInitStartedEvent"
+
+
+class GrapheneResourceInitSuccessEvent(graphene.ObjectType):
+    class Meta:
+        interfaces = (
+            GrapheneMessageEvent,
+            GrapheneDisplayableEvent,
+            GrapheneStepEvent,
+            GrapheneMarkerEvent,
+        )
+        name = "ResourceInitSuccessEvent"
+
+
+class GrapheneResourceTeardownFailureEvent(graphene.ObjectType):
+    class Meta:
+        interfaces = (
+            GrapheneMessageEvent,
+            GrapheneDisplayableEvent,
+            GrapheneStepEvent,
+            GrapheneMarkerEvent,
+        )
+        name = "ResourceTeardownFailureEvent"
+
+    error = graphene.Field(GraphenePythonError)
+
+
+class GrapheneStepProcessStartedEvent(graphene.ObjectType):
+    class Meta:
+        interfaces = (
+            GrapheneMessageEvent,
+            GrapheneDisplayableEvent,
+            GrapheneStepEvent,
+            GrapheneMarkerEvent,
+        )
+        name = "StepProcessStarted"
+
+
+class GrapheneStepProcessStartingEvent(graphene.ObjectType):
+    class Meta:
+        interfaces = (
+            GrapheneMessageEvent,
+            GrapheneDisplayableEvent,
+            GrapheneStepEvent,
+            GrapheneMarkerEvent,
+        )
+        name = "StepProcessStarting"
 
 
 class GrapheneStepExpectationResultEvent(graphene.ObjectType):

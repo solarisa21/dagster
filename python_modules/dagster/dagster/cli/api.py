@@ -12,9 +12,11 @@ from dagster.cli.workspace.cli_target import (
     get_working_directory_from_kwargs,
     python_origin_target_argument,
 )
+from dagster.core.definitions.metadata import MetadataEntry
 from dagster.core.errors import DagsterExecutionInterruptedError
 from dagster.core.events import DagsterEvent, DagsterEventType, EngineEventData
 from dagster.core.execution.api import create_execution_plan, execute_plan_iterator
+from dagster.core.execution.context_creation_pipeline import create_context_free_log_manager
 from dagster.core.execution.run_cancellation_thread import start_run_cancellation_thread
 from dagster.core.instance import DagsterInstance
 from dagster.core.origin import (
@@ -111,7 +113,7 @@ def _execute_run_command_body(
     instance.report_engine_event(
         "Started process for run (pid: {pid}).".format(pid=pid),
         pipeline_run,
-        EngineEventData.in_process(pid, marker_end="cli_api_subprocess_init"),
+        EngineEventData.in_process(pid),
     )
 
     run_worker_failed = 0
@@ -213,7 +215,7 @@ def _resume_run_command_body(
     instance.report_engine_event(
         "Started process for resuming pipeline (pid: {pid}).".format(pid=pid),
         pipeline_run,
-        EngineEventData.in_process(pid, marker_end="cli_api_subprocess_init"),
+        EngineEventData.in_process(pid),
     )
 
     run_worker_failed = False
@@ -360,6 +362,27 @@ def _execute_step_command_body(
             PipelinePythonOrigin,
             "Pipeline run with id '{}' does not include an origin.".format(args.pipeline_run_id),
         )
+
+        log_manager = create_context_free_log_manager(instance, pipeline_run)
+        if single_step_key:
+            yield DagsterEvent.step_process_started(
+                log_manager,
+                pipeline_run.pipeline_name,
+                message="Executing step"
+                + ("s" if not single_step_key else "")
+                + " "
+                + ",".join(args.step_keys_to_execute),
+                metadata_entries=(
+                    [
+                        MetadataEntry("pid", value=str(os.getpid())),
+                    ]
+                    + (
+                        [MetadataEntry("step_key", value=single_step_key)]
+                        if single_step_key
+                        else []
+                    )
+                ),
+            )
 
         if args.should_verify_step:
             success = verify_step(

@@ -1235,6 +1235,8 @@ export interface LogsRowStructuredFragment_EngineEvent {
   label: string | null;
   description: string | null;
   metadataEntries: LogsRowStructuredFragment_EngineEvent_metadataEntries[];
+  markerStart: string | null;
+  markerEnd: string | null;
   engineError: LogsRowStructuredFragment_EngineEvent_engineError | null;
 }
 

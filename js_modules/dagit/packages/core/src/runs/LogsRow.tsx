@@ -111,6 +111,10 @@ export const LOGS_ROW_STRUCTURED_FRAGMENT = gql`
         ...MetadataEntryFragment
       }
     }
+    ... on MarkerEvent {
+      markerStart
+      markerEnd
+    }
     ... on MaterializationEvent {
       assetKey {
         path

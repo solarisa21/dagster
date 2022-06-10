@@ -1235,6 +1235,8 @@ export interface LogsScrollingTableMessageFragment_EngineEvent {
   label: string | null;
   description: string | null;
   metadataEntries: LogsScrollingTableMessageFragment_EngineEvent_metadataEntries[];
+  markerStart: string | null;
+  markerEnd: string | null;
   engineError: LogsScrollingTableMessageFragment_EngineEvent_engineError | null;
 }
 

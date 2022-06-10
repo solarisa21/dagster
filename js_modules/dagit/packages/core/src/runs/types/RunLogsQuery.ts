@@ -1260,9 +1260,9 @@ export interface RunLogsQuery_logsForRun_EventConnection_events_EngineEvent {
   label: string | null;
   description: string | null;
   metadataEntries: RunLogsQuery_logsForRun_EventConnection_events_EngineEvent_metadataEntries[];
-  engineError: RunLogsQuery_logsForRun_EventConnection_events_EngineEvent_engineError | null;
   markerStart: string | null;
   markerEnd: string | null;
+  engineError: RunLogsQuery_logsForRun_EventConnection_events_EngineEvent_engineError | null;
 }
 
 export interface RunLogsQuery_logsForRun_EventConnection_events_RunFailureEvent_pipelineFailureError_cause {

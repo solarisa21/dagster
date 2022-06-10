@@ -1235,9 +1235,9 @@ export interface RunDagsterRunEventFragment_EngineEvent {
   label: string | null;
   description: string | null;
   metadataEntries: RunDagsterRunEventFragment_EngineEvent_metadataEntries[];
-  engineError: RunDagsterRunEventFragment_EngineEvent_engineError | null;
   markerStart: string | null;
   markerEnd: string | null;
+  engineError: RunDagsterRunEventFragment_EngineEvent_engineError | null;
 }
 
 export interface RunDagsterRunEventFragment_RunFailureEvent_pipelineFailureError_cause {
